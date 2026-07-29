@@ -2,7 +2,7 @@
     import GoogleIcon from '$lib/assets/googleicon.svg';
 </script>
  
-<div class="relative flex min-h-screen flex-col items-center justify-center bg-zinc-950 px-6 text-center">
+<div class="relative flex min-h-screen flex-col items-center justify-center bg-gray-950 px-6 text-center">
     <div class="pointer-events-none absolute left-1/2 top-1/3 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-400/10 blur-3xl"></div>
     <div class="relative flex flex-col items-center gap-6">
         <div>
