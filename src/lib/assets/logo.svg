@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 140">
+  <rect width="100%" height="100%" fill="none"/>
+  <g stroke="white" fill="none" stroke-width="6" stroke-linecap="round">
+    <rect x="20" y="20" width="80" height="100" rx="8"/>
+    <line x1="38" y1="48" x2="82" y2="48"/>
+    <line x1="38" y1="66" x2="82" y2="66"/>
+    <line x1="38" y1="84" x2="70" y2="84"/>
+  </g>
+  <text x="130" y="82"
+        font-family="Inter, Segoe UI, Arial, sans-serif"
+        font-size="44"
+        font-weight="700"
+        fill="white"
+        letter-spacing="1">CNSA IB DOCS</text>
+</svg>
