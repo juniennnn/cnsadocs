@@ -5,7 +5,10 @@
     let { data, form }: PageProps = $props();
 </script>
 <div class="relative">
-    <div class="absolute -top-20 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-amber-400/10 blur-3xl"></div>
+    <div
+    class="pointer-events-none absolute -top-20 left-1/2 h-64 w-64
+           -translate-x-1/2 rounded-full bg-amber-400/10 blur-3xl"
+></div>
         <div class="text-center text-sm items-center gap-10 border-2 px-10 py-10 mx-10 my-10 rounded-xl font-sans">
             <h1 class="text-left text-xl">아이디를 입력해주세요:</h1><br>
             <p class="mt-2 text-sm text-zinc-400">
