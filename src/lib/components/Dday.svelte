@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { slide } from 'svelte/transition';
     type Props = {
         //이렇게 써야함: '2026-05-01T09:00:00+09:00' (한국 기준으로 UTF+9)
         target: string;
@@ -29,25 +30,29 @@
     const pad = (n: number) => String(n).padStart(2, '0');
 </script>
 
-<div>
+<div class="mx-10">
         <p class="text-sm text-zinc-400">{label}</p>
     {#if over}
         <p class="mt-2 text-xl font-semibold text-zinc-500">{doneText}</p>
     {:else}
         <!-- D-n 은 남은 일수 기준 -->
-        <p class="mt-1 text-3xl font-semibold tracking-tight text-white">
-            D-{t.days}
-        </p>
 
-        <div class="mt-4 grid grid-cols-4 gap-2 text-center" aria-hidden="true">
-            {#each [['일', t.days], ['시간', t.hours], ['분', t.minutes], ['초', t.seconds]] as [unit, value] (unit)}
-                <div class="rounded-xl bg-black py-3">
-                    <div class="text-2xl font-semibold tabular-nums text-white">
-                        {pad(value as number)}
-                    </div>
-                    <div class="mt-0.5 text-[11px] text-zinc-500">{unit}</div>
+        <div class="flex items-start gap-3" aria-hidden="true">
+            <p class="mt-2 text-3xl font-semibold tracking-tight text-white">
+                D-{t.days}
+            </p>
+            
+            {#each [ ['HRS', t.hours], ['MIN', t.minutes], ['SEC', t.seconds]] as [unit, value] (unit)}
+                <div class="flex flex-col relative h-12 w-40 rounded-xl bg-gray-900/85 py-3">
+                    {#key value}
+                        <div class="absolute inset-0 flex items-center justify-center text-2xl font-semibold tabular-nums text-white" transition:slide={{duration : 250}}>
+                            {pad(value as number)}
+                        </div>
+                    {/key} 
+                    <div class="absolute inset-0 flex items-center justify-center text-[11px] text-zinc-500">{unit}</div>
                 </div>
             {/each}
+            
         </div>
         <span class="sr-only">
             {t.days}일 {t.hours}시간 {t.minutes}분 남음

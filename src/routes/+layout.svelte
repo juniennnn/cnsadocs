@@ -12,7 +12,7 @@
 	}
 	let { children } = $props();
 </script>
-<div class="mx-auto bg-gray-900/95 backdrop-blur-3xl p-2 sticky top-0 z-10">
+<div class="mx-auto bg-gray-900/95 backdrop-blur-10xl p-2 sticky top-0 z-10">
 
 	<div class="text-center flex justify-between items-center gap-6 text-s h-10 max-w-xl mx-auto text-white">
 		<div class="absolute left-4">
@@ -24,7 +24,7 @@
 		<div class="flex mx-auto gap-3">
 			<a href="/app" aria-label="Home"
 				class="hidden sm:flex p-2 rounded-xl bg-gray-800 hover:bg-gray-500 transition-all {page.url.pathname === '/app' ? 'border border-gray-400' : 'border-transparent'}">
-				<img class="w-5 h-auto" src={homeicon} alt="">
+				<img class="w-6 h-auto" src={homeicon} alt="">
 			</a>
 			<a href="/resources" class="hidden sm:flex p-2 rounded-full hover:bg-gray-700 transition-all {page.url.pathname === '/resources' ? 'border border-gray-400' : 'border-transparent'}">Resources</a>
 			<a href="/ib-core" class="hidden sm:flex p-2 rounded-full hover:bg-gray-700 transition-all {page.url.pathname === '/ib-core' ? 'border border-gray-400' : 'border-transparent'}">IB Core</a>
