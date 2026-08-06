@@ -1,3 +1,11 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+:root {
+    --bg: #0d0d12;
+    --surface: #16161f;
+    --border: #2a2a3a;
+    --text: #f0f0ff;
+    --muted: #8888aa;
+    --accent: #d0d0e8;
+}

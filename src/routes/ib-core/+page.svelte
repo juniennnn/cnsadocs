@@ -5,7 +5,7 @@
 
     let { data }: PageProps = $props();
 </script>
-<div class="min-h-screen bg-gray-900/95 text-white">
+<div class="min-h-screen bg-(--surface) text-(--text)">
     <Dday target="2027-05-01T09:00:00+09:00" label="TOK" />
     <div class="my-10 mx-10 flow-root">
         <p class="text-xs my-5">FEATURED VIDEO</p>

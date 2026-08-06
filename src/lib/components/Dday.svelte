@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { slide } from 'svelte/transition';
+    import { fly } from 'svelte/transition';
     type Props = {
         //이렇게 써야함: '2026-05-01T09:00:00+09:00' (한국 기준으로 UTF+9)
         target: string;
@@ -31,26 +31,30 @@
 </script>
 
 <div class="mx-10">
-        <p class="text-sm text-zinc-400">{label}</p>
+        <p class="text-sm text-(--muted)">{label}</p>
     {#if over}
-        <p class="mt-2 text-xl font-semibold text-zinc-500">{doneText}</p>
+        <p class="mt-2 text-xl font-semibold text-(--muted)">{doneText}</p>
     {:else}
         <!-- D-n 은 남은 일수 기준 -->
 
-        <div class="flex items-start gap-3" aria-hidden="true">
-            <p class="mt-2 text-3xl font-semibold tracking-tight text-white">
+        <div class="flex items-center gap-3 " aria-hidden="true">
+            <p class="mt-2 mr-10 text-3xl font-semibold tracking-tight text-(--text)">
                 D-{t.days}
             </p>
             
-            {#each [ ['HRS', t.hours], ['MIN', t.minutes], ['SEC', t.seconds]] as [unit, value] (unit)}
-                <div class="flex flex-col relative h-12 w-40 rounded-xl bg-gray-900/85 py-3">
+            {#each [ ['HRS', t.hours], ['MIN', t.minutes], ['SEC', t.seconds]] as [unit, value], i (unit)}
+                <div class="flex flex-col relative h-18 w-40 rounded-xl bg-(--border) py-3">
                     {#key value}
-                        <div class="absolute inset-0 flex items-center justify-center text-2xl font-semibold tabular-nums text-white" transition:slide={{duration : 250}}>
-                            {pad(value as number)}
+                        <div class="absolute top-4 left-0 right-0 flex flex-col items-center justify-center text-2xl font-semibold tabular-nums text-(--text)" transition:fly={{duration : 850}}>
+                            {pad(value as number)}<br>
                         </div>
                     {/key} 
-                    <div class="absolute inset-0 flex items-center justify-center text-[11px] text-zinc-500">{unit}</div>
+                    <span class="text-[11px] text-(--muted) relative top-8 text-center">{unit}</span>
+                    
                 </div>
+                {#if i < 2}
+                    <p class="self-center font-semibold tabular-nums">:</p>
+                {/if}
             {/each}
             
         </div>
