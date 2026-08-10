@@ -2,12 +2,18 @@
 	"$schema": "./node_modules/wrangler/config-schema.json",
 	"name": "cnsadocs",
 	"compatibility_date": "2026-05-26",
-	"compatibility_flags": ["nodejs_als"],
+	"compatibility_flags": [
+		"nodejs_als"
+	],
 	"main": ".svelte-kit/cloudflare/_worker.js",
 	"assets": {
 		"binding": "ASSETS",
 		"directory": ".svelte-kit/cloudflare"
 	},
 	"workers_dev": true,
-	"preview_urls": true
+	"preview_urls": true,
+	"vars": {
+		"PUBLIC_SUPABASE_PUBLISHABLE_KEY": "sb_publishable_Zg3p8Z8OzWCgbwPvmzBHWw_CHyjwa0P",
+		"PUBLIC_SUPABASE_URL": "https://otudarbdlzxulfthltgn.supabase.co"
+	}
 }
