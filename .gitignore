@@ -1,5 +1,6 @@
 node_modules
 .agents
+worker-configuration.d.ts
 
 # Output
 .output
