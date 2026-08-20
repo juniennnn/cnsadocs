@@ -1,5 +1,8 @@
 <script lang="ts">
-    import type { PageProps } from './$types';
+  import DriveBrowser from "$lib/components/DriveBrowser.svelte"
+  import type { PageData } from "./$types"
 
-    let { data }: PageProps = $props();
+  let { data }: { data: PageData } = $props()
 </script>
+
+<DriveBrowser rootFolderId={data.rootFolderId} rootName="CNSAIBDP Docs" />
