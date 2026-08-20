@@ -37,8 +37,8 @@ export async function verifyFolderToken(token: string): Promise<string | null> {
   const [encodedId, encodedSignature] = token.split("~")
   if (!encodedId || !encodedSignature) return null
 
-  let payload: Uint8Array
-  let signature: Uint8Array
+  let payload: Uint8Array<ArrayBuffer>
+  let signature: Uint8Array<ArrayBuffer>
   try {
     payload = base64urlDecode(encodedId)
     signature = base64urlDecode(encodedSignature)
