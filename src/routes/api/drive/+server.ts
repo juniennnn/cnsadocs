@@ -20,7 +20,15 @@ export const GET: RequestHandler = async ({ url, locals }) => {
     throw error(403, "접근할 수 없는 폴더입니다.")
   }
 
-  const files = await listFolder(folderId)
+  let files
+  try {
+    files = await listFolder(folderId)
+  } catch (cause) {
+    // Drive/token failures are the ones worth reading in the logs; a bare 500
+    // hides whether it was auth, quota, or a disabled API.
+    console.error("[api/drive] listFolder failed", cause)
+    throw error(502, cause instanceof Error ? cause.message : "드라이브 요청이 실패했습니다.")
+  }
 
   // Subfolders go out as signed tokens; files go out as plain links. Raw folder
   // ids never reach the client, so there is nothing to tamper with.

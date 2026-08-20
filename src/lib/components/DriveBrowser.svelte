@@ -37,14 +37,24 @@
     errorMessage = null
     try {
       const res = await fetch(`/api/drive?folder=${encodeURIComponent(token)}`)
-      if (!res.ok) throw new Error(String(res.status))
+      if (!res.ok) {
+        // SvelteKit sends `error()` messages as { message }; keep it so the user
+        // sees "로그인이 필요합니다" rather than a blanket failure.
+        const detail = await res
+          .clone()
+          .json()
+          .then((body) => (body as { message?: string }).message)
+          .catch(() => null)
+        throw new Error(detail || `요청이 실패했습니다 (HTTP ${res.status})`)
+      }
       const data = (await res.json()) as { files: DriveEntry[] }
       if (id !== requestId) return
       files = data.files
-    } catch {
+    } catch (cause) {
       if (id !== requestId) return
       files = []
-      errorMessage = "폴더를 불러오지 못했습니다."
+      errorMessage = cause instanceof Error ? cause.message : "폴더를 불러오지 못했습니다."
+      console.error("[DriveBrowser] failed to load folder", cause)
     } finally {
       if (id === requestId) loading = false
     }
