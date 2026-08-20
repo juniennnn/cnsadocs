@@ -176,7 +176,7 @@
 
     <section class="mt-10">
         <div class="overflow-x-auto rounded-xl border border-zinc-200 bg-white">
-            <table class="w-full min-w-[1100px] border-collapse text-left">
+            <table class="w-full min-w-275 border-collapse text-left">
                 <thead>
                     <tr class="bg-zinc-50">
                         <th

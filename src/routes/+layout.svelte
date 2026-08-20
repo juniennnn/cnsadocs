@@ -26,9 +26,9 @@
 				class="hidden sm:flex p-2 rounded-xl bg-(--surface) hover:bg-(--border) transition-all {page.url.pathname === '/app' ? 'border border-(--accent)' : 'border-transparent'}">
 				<img class="w-6 h-auto" src={homeicon} alt="">
 			</a>
-			<a href="/resources" class="hidden sm:flex p-2 rounded-full hover:bg-(--border) transition-all {page.url.pathname === '/resources' ? 'border border-(--accent)' : 'border-transparent'}">Resources</a>
-			<a href="/ib-core" class="hidden sm:flex p-2 rounded-full hover:bg-(--border) transition-all {page.url.pathname === '/ib-core' ? 'border border-(--accent)' : 'border-transparent'}">IB Core</a>
-			<a href="/university" class="hidden sm:flex p-2 rounded-full hover:bg-(--border) transition-all {page.url.pathname === '/university' ? 'border border-(--accent)' : 'border-transparent'}">University</a>
+			<a href="/app/resources" class="hidden sm:flex p-2 rounded-full hover:bg-(--border) transition-all {page.url.pathname === '/app/resources' ? 'border border-(--accent)' : 'border-transparent'}">Resources</a>
+			<a href="/app/ib-core" class="hidden sm:flex p-2 rounded-full hover:bg-(--border) transition-all {page.url.pathname === '/app/ib-core' ? 'border border-(--accent)' : 'border-transparent'}">IB Core</a>
+			<a href="/app/university" class="hidden sm:flex p-2 rounded-full hover:bg-(--border) transition-all {page.url.pathname === '/app/university' ? 'border border-(--accent)' : 'border-transparent'}">University</a>
 		</div>
 
 		<div class="absolute right-4 flex items-center gap-3">
@@ -46,9 +46,9 @@
 	{#if menuOpen}
 		<div class="mx-auto bg-(--surface) flex flex-col px-1 py-2 text-(--text) rounded-2xl" transition:slide={{duration: 300}}>
 			<a href="/app" onclick={clickMenu} class="p-2 rounded-full hover:bg-(--border) transition-all {page.url.pathname === '/app' ? 'border border-(--accent)' : 'border-transparent'}">Home</a>
-			<a href="/resources" onclick={clickMenu} class="p-2 rounded-full hover:bg-(--border) transition-all {page.url.pathname === '/resources' ? 'border border-(--accent)' : 'border-transparent'}">Resources</a>
-			<a href="/ib-core" onclick={clickMenu} class="p-2 rounded-full hover:bg-(--border) transition-all {page.url.pathname === '/ib-core' ? 'border border-(--accent)' : 'border-transparent'}">IB Core</a>
-			<a href="/university" onclick={clickMenu} class="p-2 rounded-full hover:bg-(--border) transition-all {page.url.pathname === '/university' ? 'border border-(--accent)' : 'border-transparent'}">University</a>
+			<a href="/app/resources" onclick={clickMenu} class="p-2 rounded-full hover:bg-(--border) transition-all {page.url.pathname === '/app/resources' ? 'border border-(--accent)' : 'border-transparent'}">Resources</a>
+			<a href="/app/ib-core" onclick={clickMenu} class="p-2 rounded-full hover:bg-(--border) transition-all {page.url.pathname === '/app/ib-core' ? 'border border-(--accent)' : 'border-transparent'}">IB Core</a>
+			<a href="/app/university" onclick={clickMenu} class="p-2 rounded-full hover:bg-(--border) transition-all {page.url.pathname === '/app/university' ? 'border border-(--accent)' : 'border-transparent'}">University</a>
 		</div>
 	{/if}	
 </div>
