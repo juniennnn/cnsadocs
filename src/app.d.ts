@@ -21,7 +21,11 @@ declare global {
         }
 		
 		// interface PageData {}
-		// interface PageState {}
+
+		interface PageState {
+			/** Drive folder trail, pushed via shallow routing so back/forward work. */
+			driveCrumbs?: { token: string; name: string }[];
+		}
 	}
 }
 

@@ -1,42 +1,44 @@
 <script lang="ts">
-  interface DriveFile {
-    id: string
+  import { pushState } from "$app/navigation"
+  import { page } from "$app/state"
+
+  interface DriveEntry {
     name: string
     mimeType: string
-    webViewLink?: string
-    thumbnailLink?: string
-    iconLink?: string
+    isFolder: boolean
     modifiedTime?: string
+    /** Signed folder token — folders only. */
+    token?: string
+    /** Drive web link — files only. */
+    link?: string
   }
 
   interface Crumb {
-    id: string
+    token: string
     name: string
   }
 
-  let { rootFolderId, rootName = "내 드라이브" } = $props<{
-    rootFolderId: string
-    rootName?: string
-  }>()
+  let { rootToken, rootName = "내 드라이브" }: { rootToken: string; rootName?: string } = $props()
 
-  let files = $state<DriveFile[]>([])
+  let files = $state<DriveEntry[]>([])
   let loading = $state(true)
   let errorMessage = $state<string | null>(null)
-  let crumbs = $state<Crumb[]>([])
 
-  const FOLDER_MIME = "application/vnd.google-apps.folder"
+  // The trail lives in history state, so the browser back button walks back up
+  // the folder tree without leaving the page.
+  const crumbs = $derived<Crumb[]>(page.state.driveCrumbs ?? [{ token: rootToken, name: rootName }])
 
   // Guards against a slow response for an earlier folder overwriting a newer one.
   let requestId = 0
 
-  async function loadFolder(folderId: string) {
+  async function loadFolder(token: string) {
     const id = ++requestId
     loading = true
     errorMessage = null
     try {
-      const res = await fetch(`/api/drive/${folderId}`)
+      const res = await fetch(`/api/drive?folder=${encodeURIComponent(token)}`)
       if (!res.ok) throw new Error(String(res.status))
-      const data = (await res.json()) as { files: DriveFile[] }
+      const data = (await res.json()) as { files: DriveEntry[] }
       if (id !== requestId) return
       files = data.files
     } catch {
@@ -48,35 +50,46 @@
     }
   }
 
-  function openFolder(file: DriveFile) {
-    crumbs = [...crumbs, { id: file.id, name: file.name }]
-    loadFolder(file.id)
+  function openEntry(entry: DriveEntry) {
+    if (entry.isFolder) {
+      if (entry.token) {
+        pushState("", { driveCrumbs: [...crumbs, { token: entry.token, name: entry.name }] })
+      }
+    } else if (entry.link) {
+      window.open(entry.link, "_blank", "noopener")
+    }
   }
 
   function goToCrumb(index: number) {
-    crumbs = crumbs.slice(0, index + 1)
-    loadFolder(crumbs[index].id)
+    if (index === crumbs.length - 1) return
+    pushState("", { driveCrumbs: crumbs.slice(0, index + 1) })
   }
 
-  function fileIcon(mimeType: string) {
-    if (mimeType === FOLDER_MIME) return "📁"
-    if (mimeType.includes("document")) return "📄"
-    if (mimeType.includes("spreadsheet")) return "📊"
-    if (mimeType.includes("presentation")) return "📽️"
-    if (mimeType.includes("pdf")) return "📕"
-    if (mimeType.includes("image")) return "🖼️"
+  function fileIcon(entry: DriveEntry) {
+    if (entry.isFolder) return "📁"
+    if (entry.mimeType.includes("document")) return "📄"
+    if (entry.mimeType.includes("spreadsheet")) return "📊"
+    if (entry.mimeType.includes("presentation")) return "📽️"
+    if (entry.mimeType.includes("pdf")) return "📕"
+    if (entry.mimeType.includes("image")) return "🖼️"
+    if (entry.mimeType.includes("video")) return "🎬"
     return "📎"
   }
 
+  function tooltip(entry: DriveEntry) {
+    if (!entry.modifiedTime) return entry.name
+    const modified = new Date(entry.modifiedTime).toLocaleDateString("ko-KR")
+    return `${entry.name} · ${modified} 수정`
+  }
+
   $effect(() => {
-    crumbs = [{ id: rootFolderId, name: rootName }]
-    loadFolder(rootFolderId)
+    loadFolder(crumbs[crumbs.length - 1].token)
   })
 </script>
 
 <div class="browser">
   <nav class="breadcrumb">
-    {#each crumbs as crumb, i}
+    {#each crumbs as crumb, i (crumb.token)}
       <button onclick={() => goToCrumb(i)} class:current={i === crumbs.length - 1}>
         {crumb.name}
       </button>
@@ -92,18 +105,9 @@
     <p class="status">빈 폴더</p>
   {:else}
     <div class="grid">
-      {#each files as file}
-        <button
-          class="item"
-          ondblclick={() => file.mimeType === FOLDER_MIME
-            ? openFolder(file)
-            : window.open(file.webViewLink, "_blank")}
-        >
-          {#if file.thumbnailLink}
-            <img src={file.thumbnailLink} alt="" class="thumb" />
-          {:else}
-            <span class="icon">{fileIcon(file.mimeType)}</span>
-          {/if}
+      {#each files as file (file.token ?? file.link)}
+        <button class="item" title={tooltip(file)} onclick={() => openEntry(file)}>
+          <span class="icon">{fileIcon(file)}</span>
           <span class="name">{file.name}</span>
         </button>
       {/each}
@@ -113,10 +117,11 @@
 
 <style>
   .browser {
-    font-family: system-ui, sans-serif;
+    color: var(--text);
   }
   .breadcrumb {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 4px;
     padding: 8px 0;
@@ -126,22 +131,27 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: #5f6368;
+    color: var(--muted);
     padding: 4px 8px;
-    border-radius: 4px;
+    border-radius: 9999px;
+    transition: background-color 0.2s;
   }
   .breadcrumb button:hover {
-    background: #f1f3f4;
+    background: var(--border);
   }
   .breadcrumb button.current {
-    color: #202124;
+    color: var(--text);
     font-weight: 500;
+    cursor: default;
+  }
+  .breadcrumb button.current:hover {
+    background: none;
   }
   .sep {
-    color: #5f6368;
+    color: var(--muted);
   }
   .status {
-    color: #5f6368;
+    color: var(--muted);
     padding: 24px 0;
     text-align: center;
   }
@@ -161,24 +171,24 @@
     border-radius: 8px;
     background: none;
     cursor: pointer;
+    transition: background-color 0.2s;
   }
   .item:hover {
-    background: #f1f3f4;
-    border-color: #dadce0;
+    background: var(--surface);
+    border-color: var(--border);
+  }
+  .item:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
   }
   .icon {
     font-size: 40px;
-  }
-  .thumb {
-    width: 64px;
-    height: 64px;
-    object-fit: cover;
-    border-radius: 4px;
+    line-height: 1;
   }
   .name {
     font-size: 12px;
     text-align: center;
     word-break: break-word;
-    color: #202124;
+    color: var(--text);
   }
 </style>

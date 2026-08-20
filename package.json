@@ -33,7 +33,6 @@
 	},
 	"dependencies": {
 		"@supabase/ssr": "^0.12.0",
-		"@supabase/supabase-js": "^2.108.2",
-		"googleapis": "^176.0.0"
+		"@supabase/supabase-js": "^2.108.2"
 	}
 }

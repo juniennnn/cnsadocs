@@ -5,4 +5,6 @@
   let { data }: { data: PageData } = $props()
 </script>
 
-<DriveBrowser rootFolderId={data.rootFolderId} rootName="CNSAIBDP Docs" />
+<div class="min-h-screen bg-(--bg) text-(--text) px-6 py-6 sm:px-10">
+  <DriveBrowser rootToken={data.rootToken} rootName="CNSAIBDP Docs" />
+</div>
